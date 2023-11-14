@@ -92,25 +92,13 @@ const addExoticFruit = async(e) => {
     e.preventDefault();
     const form =  document.getElementById("edit-fruit");
     const formData = new FormData(form);
-    const imageInput = form.querySelector("#image");
-    if (imageInput && imageInput.files.length > 0) {
-        formData.append("image", imageInput.files[0]);
-    }
-
-    formData.append("fruit", getExoticFruits());
-    formData.append("name", form.name.value);
-    formData.append("color", form.color.value);
-    formData.append("family", form.family.value);
-    formData.append("place", form.place.value);
-    formData.append("growth", form.growth.value);
-    
-
+   
     let response;
 
     if(form._id.value == -1){
         formData.delete("_id");
         formData.delete("img");
-        
+        formData.append("place", getExoticFruits());
 
         console.log(...formData);
 
@@ -133,21 +121,30 @@ const addExoticFruit = async(e) => {
 };
 
 const getExoticFruits = () => {
-    const inputs = document.querySelectorAll("#description input");
-    let fruits = [];
+    const inputs = document.querySelectorAll("#place-boxes input");
+    let place = [];
 
     inputs.forEach((input) => {
-        fruits.push(input.value);
+        place.push(input.value);
     });
 
-    return fruits;
+    return place;
 };
+
+const addPlace = (e) => {
+    e.preventDefault();
+    const section = document.getElementById("place-boxes");
+    const input = document.createElement("input");
+    input.type = "text";
+    section.append(input);
+}
 
 const resetForm = () => {
     const form = document.getElementById("edit-fruit");
     form.reset();
     form._id = "-1";
-    document.getElementById("description").innerHTML = "";
+    document.getElementById("place-boxes").innerHTML="";
+    
 };
 
 const showHideAdd = (e) => {
@@ -169,5 +166,5 @@ window.onload = () => {
         document.querySelector(".dialog").classList.add("transparent");
     };
 
-    
+    document.getElementById("add-place").onclick= addPlace;
 };

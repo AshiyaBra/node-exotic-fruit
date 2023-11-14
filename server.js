@@ -94,7 +94,7 @@ app.post("/api/fruits", upload.single("img"), (req, res) => {
     }
 
     fruits.push(newFruit);
-    res.send(newFruit);
+    res.send(fruits);
 });
 
 const validateFruit = (fruit) => {
@@ -103,7 +103,7 @@ const validateFruit = (fruit) => {
         name: Joi.string().min(3).required(),
         color: Joi.string().min(3).required(),
         family: Joi.string().min(3).required(),
-        place: Joi.array().items(Joi.string().min(3)).required(),
+        place: Joi.allow(""),
         growth: Joi.string().min(3).required(),
         image: Joi.string().allow(""),
        

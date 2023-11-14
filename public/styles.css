@@ -96,12 +96,12 @@ label {
     display: inline;
 }
 
-#fruit-description input {
+#place-p input {
     margin-top: 5px;
 }
 
-#description {
-    color: var(--text);
+#add-place {
+    color: darkblue;
     font-size: 0.75em;
     text-align: right;
 }
