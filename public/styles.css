@@ -21,13 +21,15 @@ section, #fruits-column, #edit-fruit-container {
     color:var(--text);
 }
 
-#edit{
+#edit-link {
     float: right;
     margin-right: 10px;
+    color:#9B3CA5;
 }
 
-#delete{
-    float: right;
+#delete-link {
+    float: center;
+    color:#9B3CA5;
 }
 
 /*Dialog/Close Button*/
@@ -70,9 +72,7 @@ h2, h3, p, a{
     color:var(--text);
     text-decoration: none;
 }
-a:hover {
-    color: var(--section);
-}
+
 body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     background-color: plum;
@@ -84,7 +84,6 @@ body{
 .transparent {
     opacity: 0;
 }
-
 
 /* Form */
 
@@ -101,7 +100,7 @@ label {
 }
 
 #add-place {
-    color: darkblue;
+    color: var(--text);
     font-size: 0.75em;
     text-align: right;
 }

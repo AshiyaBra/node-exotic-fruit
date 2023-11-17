@@ -1,4 +1,4 @@
-const getFruits = async () => {
+const getFruits = async() => {
     try{
         return (await fetch("/api/fruits")).json();
     }catch(error){
@@ -6,11 +6,13 @@ const getFruits = async () => {
     }
 };
 
-const showFruits = async () => {
+const showFruits = async() => {
     let fruits = await getFruits();
     let fruitsDiv = document.getElementById("fruits-list");
+    fruitsDiv.innerHTML = "";
     fruits.forEach((fruit) => {
         const section = document.createElement("section");
+        section.classList.add("fruit");
         fruitsDiv.append(section);
 
         const a = document.createElement("a");
@@ -30,7 +32,21 @@ const showFruits = async () => {
 
 const displayFruits = (fruit) => {
     const fruitsInfo = document.getElementById("fruits-info");
-    fruitsInfo.innerHTML = " ";
+    fruitsInfo.innerHTML = "";
+
+    const dLink = document.createElement("a");
+    dLink.innerHTML = "	&#x2715;";
+    fruitsInfo.append(dLink);
+    dLink.id = "delete-link";
+
+    const eLink = document.createElement("a");
+    eLink.innerHTML = "&#9998;";
+    fruitsInfo.append(eLink);
+    eLink.id = "edit-link";
+
+    const name = document.createElement("h3");
+    name.innerHTML = `<strong>Name: </strong> ${fruit.name}`;
+    fruitsInfo.append(name);
 
     const color = document.createElement("p");
     color.innerHTML = `<strong>Color: </strong> ${fruit.color}`;
@@ -60,22 +76,12 @@ const displayFruits = (fruit) => {
         li.innerHTML = item;
     });
 
-    const deleteLink = document.createElement("a");
-    deleteLink.innerHTML = "&#x2715;";
-    deleteLink.id = "delete"; 
-    fruitsInfo.appendChild(deleteLink);
-
-    const editLink = document.createElement("a");
-    editLink.innerHTML = "&#9998;";
-    editLink.id = "edit"; 
-    fruitsInfo.appendChild(editLink);
-
-    deleteLink.onclick = (e) => {
+    dLink.onclick = (e) => {
         e.preventDefault();
         
     };
 
-    editLink.onclick = (e) => {
+    eLink.onclick = (e) => {
         e.preventDefault();
         document.querySelector(".dialog").classList.remove("transparent");
         document.getElementById("title").innerHTML = "Edit Exotic Fruit Info";
@@ -85,7 +91,24 @@ const displayFruits = (fruit) => {
 };
 
 const populateEditForm = (fruit) => {
+    const form = document.getElementById("edit-fruit");
+    form._id.value = fruit._id;
+    form.name.value = fruit.name;
+    form.color.value = fruit.color;
+    form.family.value = fruit.family;
+    populatePlaces(fruit.places);
+    form.growth.value = fruit.growth;
+    form.image.value = fruit.image;
+};
 
+const populatePlaces = (places) => {
+    const section = document.getElementById("place-boxes");
+    places.forEach((place) => {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = place;
+        section.append(input);
+    });
 };
 
 const addExoticFruit = async(e) => {
@@ -94,11 +117,11 @@ const addExoticFruit = async(e) => {
     const formData = new FormData(form);
    
     let response;
-
+    formData.append("place", getExoticFruits());
     if(form._id.value == -1){
         formData.delete("_id");
         formData.delete("img");
-        formData.append("place", getExoticFruits());
+       
 
         console.log(...formData);
 
@@ -107,6 +130,16 @@ const addExoticFruit = async(e) => {
             body: formData
         });
 
+    }
+
+    else{
+        formData.delete("img");
+        console.log(...formData);
+
+        response = await fetch("/api/fruits/", {
+            method: "PUT",
+            body: formData
+        });
     }
 
     if(response.status != 200){
